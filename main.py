@@ -23,6 +23,18 @@ IMAGE_QUALITY = int(args.img_quality)
 def remove_letters(text):
     return ''.join([c for c in text if not c.isalpha()])
 
+# Sanitizes a string to be used as a filename
+def sanitize_filename(text):
+    # Remove newlines and trim whitespace
+    text = text.replace('\n', '').strip()
+    # Remove or replace invalid filename characters
+    invalid_chars = '<>:"/\\|?*'
+    for char in invalid_chars:
+        text = text.replace(char, '')
+    # Remove multiple spaces and dots
+    text = ' '.join(text.split())
+    return text
+
 # Resizes an image so that its width or height does not exceed the specified maximum size.
 def resize_image(image):
     """
@@ -83,10 +95,11 @@ def save_images_from_page(document, page_number, product_reference):
         # Resize the image
         image = resize_image(image)
 
-        # Set the filename of the image and save
+        # Set the filename of the image and save with sanitized product reference
+        safe_reference = sanitize_filename(product_reference)
         image_filename = os.path.join(
-            OUTPUT_IMAGES_DIR, f"{product_reference}_{page_number + 1}.{IMAGE_FORMAT}")
-        image.save(image_filename, f"{IMAGE_FORMAT}", quality=f"{IMAGE_QUALITY}")
+            OUTPUT_IMAGES_DIR, f"{safe_reference}_{page_number + 1}.{IMAGE_FORMAT}")
+        image.save(image_filename, IMAGE_FORMAT, quality=IMAGE_QUALITY)
 
         saved_images.append(image_filename)
 
