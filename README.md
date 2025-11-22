@@ -26,6 +26,13 @@ These can be installed using `pip`:
 pip install pdfplumber pymupdf pillow
 ```
 
+or if using [uv](https://docs.astral.sh/uv/)
+
+```
+uv synv
+uv run main.py
+```
+
 ## Usage
 
 1. Clone the repository or download the script.
@@ -33,10 +40,17 @@ pip install pdfplumber pymupdf pillow
 3. Update the `PDF_PATH` constant in the script to point to your target PDF file.
 4. Run the script:
 ```
-python pdf_image_extractor.py
+python main.py input_file output_dir img_format img_quality
 ```
 
 After execution, check the `images` folder for the extracted images.
+
+For example, you can extract to png in the current folder via:
+
+```
+python main.py ./file.pdf ./ png 100
+```
+
 
 ## Customization
 
